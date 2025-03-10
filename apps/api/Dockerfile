@@ -1,5 +1,5 @@
-FROM --platform=linux/amd64 node:20-slim as base
 
+FROM --platform=linux/amd64 node:20-slim as base
 # Create app directory
 WORKDIR /app
 
@@ -46,4 +46,5 @@ ARG PORT=8080
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "start:production:w:workers"]
+

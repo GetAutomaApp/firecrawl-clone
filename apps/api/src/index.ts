@@ -54,6 +54,17 @@ if (cluster.isPrimary) {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json({ limit: "10mb" }));
 
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    const apiKey = req.headers["x-api-key"];
+    const expectedKey = process.env.FIRECRAWL_SELFHOST_API_KEY;
+
+    if (!expectedKey || !apiKey || apiKey !== expectedKey) {
+      return res.status(403).json({ success: false, error: "Forbidden: Invalid API Key" });
+    }
+
+    next();
+  });
+
   app.use(cors()); // Add this line to enable CORS
 
   app.use("/v1", v1Router);
@@ -89,7 +100,7 @@ if (cluster.isPrimary) {
    *               type: object
    *               properties:
    *                 waitingJobs:
-   *                   type: number   
+   *                   type: number
    *                   example: 0
    */
   app.get(`/serverHealthCheck`, async (req, res) => {
@@ -125,7 +136,7 @@ if (cluster.isPrimary) {
    *               properties:
    *                 isProduction:
    *                   type: boolean
-   *                   example: true  
+   *                   example: true
    */
   app.get("/is-production", (req, res) => {
     res.send({ isProduction: global.isProduction });
@@ -180,11 +191,11 @@ if (cluster.isPrimary) {
 
       Logger.error(
         "Error occurred in request! (" +
-          req.path +
-          ") -- ID " +
-          id +
-          " -- " +
-          verbose
+        req.path +
+        ") -- ID " +
+        id +
+        " -- " +
+        verbose
       );
       res.status(500).json({
         success: false,
@@ -195,5 +206,5 @@ if (cluster.isPrimary) {
     }
   );
 
-  Logger.info(`Worker ${process.pid} started`);
 }
+Logger.info(`Worker ${process.pid} started`);

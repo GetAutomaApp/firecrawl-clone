@@ -1,5 +1,8 @@
 https://github.com/devflowinc/firecrawl-simple
 
+Initially run this command to get the redis url:
+`fly redis create --org <org-here>`
+
 To set this up please create a .env from this example:
 ```
 REDIS_URL=

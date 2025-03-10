@@ -15,4 +15,5 @@ run `cd apps/api ; fly launch`
 run `cd apps/puppeteer-service-ts ; fly launch`
 
 Ensure the `PLAYWRIGHT_MICROSERVICE_URL` is the url you find when hosting puppeteer-service-ts.
+`fly ips allocate-v6 --private`
 Ensure to use a flycast url & remove the public ipv4 & ipv6 addresses from the puppeteer-service-ts.
